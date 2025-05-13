@@ -24,8 +24,8 @@
 #include "lib/ssd1306.h"  //biblioteca do ssd1306
 
 // Credenciais WIFI - Tome cuidado se publicar no github!
-#define WIFI_SSID "Eliene Araujo"
-#define WIFI_PASSWORD "claragabyleo"
+#define WIFI_SSID "Coloque o nome da sua rede aqui"
+#define WIFI_PASSWORD "Coloque o nome da sua senha aqui"
 
 // Definição dos pinos dos LEDs
 
