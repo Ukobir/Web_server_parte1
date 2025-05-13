@@ -31,15 +31,18 @@ elétricas.
 1. **Clonar o repositório**: Clone o repositório utilizando o comando Git no terminal:
    
    ```bash
-   https://github.com/Ukobir/Sem-foro-RTOS.git
+   https://github.com/Ukobir/Web_server_parte1.git
    ```
 2. Importar o código no VS Code com a extensão do Raspberry pi pico.
 3. Compilar o código e carregar o código na **BitDogLab**.
+4. Modificar o arquivo control.c com as suas credências de rede.
+5. Utilizar um monitor serial para verificar o IP para conexão.
+6. Colar o IP do web server no navegador
 
 ## Testes Realizados
 Foi feito diversos testes para garantir a funcionamento devido da atividade. Além de que foi organizado o código conforme explicado em aula.
 
 ## Vídeo de Demonstração
-[Link do Vídeo](https://drive.google.com/file/d/16l1u8w1RpUfRzKwFRIcEIEJ3yqOM12sM/view?usp=sharing)
+[Link do Vídeo](https://drive.google.com/file/d/1XScBQsdPJ9HumzFTiWUak5iezua-FC__/view?usp=sharing)
 
 
