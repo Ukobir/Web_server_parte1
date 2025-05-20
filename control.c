@@ -1,10 +1,3 @@
-/**
- * AULA IoT - Embarcatech - Ricardo Prates - 004 - Webserver Raspberry Pi Pico w - wlan
- *
- * Material de suporte
- *
- * https://www.raspberrypi.com/documentation/pico-sdk/networking.html#group_pico_cyw43_arch_1ga33cca1c95fc0d7512e7fef4a59fd7475
- */
 
 #include <stdio.h>  // Biblioteca padrão para entrada e saída
 #include <string.h> // Biblioteca manipular strings
@@ -22,6 +15,7 @@
 #include "pico/bootrom.h" //biblioteca para o modo bootsel(utilizado no botão B)
 #include "lib/ws2812.h"   //biblioteca para o controle PIO da Matriz de LED
 #include "lib/ssd1306.h"  //biblioteca do ssd1306
+#include "lib/buzina.h"   //biblioteca do buzzer
 
 // Credenciais WIFI - Tome cuidado se publicar no github!
 #define WIFI_SSID "Coloque o nome da sua rede aqui"
@@ -35,6 +29,7 @@
 #define LED_RED_PIN 13                // GPIO13 - LED vermelho
 
 #define botaoB 6
+#define botaoA 5
 
 // Comando de instrução para o display
 ssd1306_t ssd;
@@ -43,6 +38,7 @@ ssd1306_t ssd;
 static bool q1 = 0;
 static bool q2 = 0;
 static bool q3 = 0;
+static bool flag = false;
 
 // Inicializar os Pinos GPIO para acionamento dos LEDs da BitDogLab
 void gpio_led_bitdog(void);
@@ -78,6 +74,9 @@ int main()
     initDisplay(&ssd); // Inicia o display LED
 
     gpio_set_irq_enabled_with_callback(botaoB, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+    gpio_set_irq_enabled_with_callback(botaoA, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+
+    initPwm();
 
     waitUSB();
 
@@ -86,6 +85,7 @@ int main()
     {
         printf("Falha ao inicializar Wi-Fi\n");
         sleep_ms(100);
+
         return -1;
     }
 
@@ -149,6 +149,25 @@ int main()
          */
         cyw43_arch_poll(); // Necessário para manter o Wi-Fi ativo
         sleep_ms(100);     // Reduz o uso da CPU
+        if (flag)
+        {
+            q1 = 0;
+            q2 = 0;
+            q3 = 0;
+            flag = 0;
+            gpio_put(LED_BLUE_PIN, 0);
+            gpio_put(LED_RED_PIN, 0);
+            gpio_put(LED_GREEN_PIN, 0);
+            npSetLED(11, 0, 0, 0);
+            npSetLED(12, 0, 0, 0);
+            npSetLED(13, 0, 0, 0);
+            npWrite();
+            semafor(&ssd, 0);
+            beep(10, 30e3);
+            beep(21, 30e3);
+            sleep_ms(500);
+            semSom();
+        }
     }
 
     // Desligar a arquitetura CYW43.
@@ -177,6 +196,10 @@ void gpio_led_bitdog(void)
     gpio_init(botaoB);
     gpio_set_dir(botaoB, GPIO_IN);
     gpio_pull_up(botaoB);
+
+    gpio_init(botaoA);
+    gpio_set_dir(botaoA, GPIO_IN);
+    gpio_pull_up(botaoA);
 }
 
 // Função de callback ao aceitar conexões TCP
@@ -329,6 +352,10 @@ void user_request(char **request)
             semafor(&ssd, 0);
         }
     }
+    beep(10, 30e3);
+    beep(21, 30e3);
+    sleep_ms(500);
+    semSom();
 };
 
 // Leitura da temperatura interna
@@ -369,7 +396,7 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, er
 
     // Instruções html do webserver
     snprintf(html, sizeof(html), // Formatar uma string e armazená-la em um buffer de caracteres
-                 "HTTP/1.1 200 OK\r\n"
+             "HTTP/1.1 200 OK\r\n"
              "Content-Type: text/html\r\n"
              "\r\n"
              "<!DOCTYPE html>\n"
@@ -426,6 +453,10 @@ void gpio_irq_handler(uint gpio, uint32_t events)
         if (gpio == botaoB)
         {
             reset_usb_boot(0, 0);
+        }
+        else if (gpio == botaoA)
+        {
+            flag = true;
         }
     }
 }

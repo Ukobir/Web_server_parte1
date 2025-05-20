@@ -43,6 +43,8 @@ elétricas.
 Foi feito diversos testes para garantir a funcionamento devido da atividade. Além de que foi organizado o código conforme explicado em aula.
 
 ## Vídeo de Demonstração
-[Link do Vídeo](https://drive.google.com/file/d/1XScBQsdPJ9HumzFTiWUak5iezua-FC__/view?usp=sharing)
+[Link do Vídeo parte 1](https://drive.google.com/file/d/1XScBQsdPJ9HumzFTiWUak5iezua-FC__/view?usp=sharing)
+[Link do Vídeo parte 2](https://drive.google.com/file/d/1AmQN1cEBktV8oz5VEPoZgLSLOkJTN8tt/view?usp=sharing)
+
 
 
